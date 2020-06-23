@@ -121,7 +121,6 @@ $(document).ready(function () {
        
        //Loop over object to ger daily weather
        for (i = 1; i < 6; i++){
-        console.log(obj.daily[i]);
         var uiCard = $("<div>").addClass("card");
         var contentData = $("<div>").addClass("content");
         var avatar = $("<div>").addClass("avatar");
@@ -143,32 +142,6 @@ $(document).ready(function () {
         fwpDiv.append(uiCard);
        }
     }
-    
-    
-    // <div class="ui card">
-    //     <div class="content">
-    //         <div class="header">Tue Jun 23rd</div>
-    //     </div>
-    //     <div class="content">
-    //         <h4 class="ui sub header">Icon</h4>
-    //         <div class="ui small feed">
-    //         <div class="event">
-    //             <div class="content">
-    //             <div class="summary">
-    //                 High Temp:
-    //             </div>
-    //             <div class="summary">
-    //                 Low Temp:
-    //                 </div>
-    //                 <div class="summary">
-    //                 Humidity:
-    //                 </div>
-    //             </div>
-    //         </div>
-    //         </div>
-    //     </div>
-    // </div>
-    
     
     //Function to store the input values in localhistory
     function storeLocal(val) {
@@ -194,9 +167,14 @@ $(document).ready(function () {
         for (i = 0; i < cities.length; i++) {
             addToHistory(cities[i]);
         }
-        currentWeather(cities[cities.length -1]);
+
+        if (cities.length === 0) {
+            currentWeather("Washington DC");
+        } else {
+           currentWeather(cities[cities.length -1]);
+        }
     }
-    renderExistingHistory();
     
+    renderExistingHistory();
     
 });
