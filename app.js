@@ -5,6 +5,8 @@ $(document).ready(function () {
     $("#weatherForm").on("submit", function(event) {
         event.preventDefault();
         var input = $("#cityInput").val();
+        
+        storeLocal(input);
         addToHistory(input);
         currentWeather(input);
         
@@ -41,7 +43,7 @@ $(document).ready(function () {
     }
     
     //Function to add the submission input to the history
-    function addToHistory(input) {
+    function addToHistory(input) { 
         var item = $("<div>");
         var content = $("<div>");
         var header = $("<div>");
@@ -62,7 +64,6 @@ $(document).ready(function () {
     }
     
     
-    
     //Function to render the current weather to the DOM
     function renderCurrentWeather(obj) {
         var wpDiv = $("#weatherPlacement");
@@ -80,8 +81,7 @@ $(document).ready(function () {
         var temp = $("<div>").addClass("text").html("<span><strong>Temp:</strong> " + obj.main.temp + " &#8457;</span>");
         var humidity = $("<div>").addClass("text").html("<span><strong>Humidity:</strong> " + obj.main.humidity + "%</span>");
         var windSpeed = $("<div>").addClass("text").html("<span><strong>Wind Speed:</strong> " + obj.wind.speed + " miles/hr</span>");
-
-        
+ 
         text.text(obj.weather[0].description);
         avatar.append(icon);
         
@@ -90,26 +90,10 @@ $(document).ready(function () {
         comment.append(avatar, content);
         uiComments.append(comment);
         
-
         cwDiv.append(uiComments);
         wpDiv.append(cwDiv);
-        console.log(obj);
     }
-    
-    // <div class="content">
-    //       <div class="author">Matt</a>
-    //       <div class="metadata">
-    //         <span class="date">Today at 5:42PM</span>
-    //       </div>
-    //       <div class="text">
-    //         How artistic!
-    //       </div>
-    //       <div class="actions">
-    //         <a class="reply">Reply</a>
-    //       </div>
-    //     </div>
-    
-    
+
     
     //Function to render the forecastedweather to the DOM
     function renderFutureWeather(obj) {
@@ -128,10 +112,91 @@ $(document).ready(function () {
         }
        uvDiv.append(uvSpan);
        wcDiv.append(uvDiv);
+       
+       
+       //Clear Future Weather Div
+       var fwpDiv = $("#futureWeatherPlacement");
+        fwpDiv.html("");
+       
+       
+       //Loop over object to ger daily weather
+       for (i = 1; i < 6; i++){
+        console.log(obj.daily[i]);
+        var uiCard = $("<div>").addClass("card");
+        var contentData = $("<div>").addClass("content");
+        var avatar = $("<div>").addClass("avatar");
+        var content = $("<div>").addClass("content").attr("id", "weatherContent");
+        var text = $("<div>").addClass("text");
+        var date = $("<div>").text(moment.unix(obj.daily[i].dt).format("ddd, MMM Do")).addClass("header");
+        var icon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + obj.daily[i].weather[0].icon + "@2x.png");
+        var tempLow = $("<div>").addClass("text").html("<span><strong>Low Temp:</strong> " + obj.daily[i].temp.min + " &#8457;</span>");
+        var tempHigh = $("<div>").addClass("text").html("<span><strong>High Temp:</strong> " + obj.daily[i].temp.max + " &#8457;</span>");
+        var humidity = $("<div>").addClass("text").html("<span><strong>Humidity:</strong> " +obj.daily[i].humidity + "%</span>");
+ 
+        text.text(obj.daily[i].weather[0].description);
+        avatar.append(icon);
+        
+        content.append(date, avatar);
+        contentData.append(text, tempHigh, tempLow, humidity);
+        uiCard.append(content, contentData);
+        
+        fwpDiv.append(uiCard);
+       }
     }
     
     
+    // <div class="ui card">
+    //     <div class="content">
+    //         <div class="header">Tue Jun 23rd</div>
+    //     </div>
+    //     <div class="content">
+    //         <h4 class="ui sub header">Icon</h4>
+    //         <div class="ui small feed">
+    //         <div class="event">
+    //             <div class="content">
+    //             <div class="summary">
+    //                 High Temp:
+    //             </div>
+    //             <div class="summary">
+    //                 Low Temp:
+    //                 </div>
+    //                 <div class="summary">
+    //                 Humidity:
+    //                 </div>
+    //             </div>
+    //         </div>
+    //         </div>
+    //     </div>
+    // </div>
     
+    
+    //Function to store the input values in localhistory
+    function storeLocal(val) {
+        var cities = getLocal();
+        cities.push(val);
+        localStorage.setItem("cities", JSON.stringify(cities));
+    }
+    
+    //Function to get localhistory array of cities
+    function getLocal() {
+        var cities = JSON.parse(localStorage.getItem("cities"));
+        if (cities === null) {
+            cities = [];
+            return cities
+        } else {
+            return cities;
+        }
+    }
+    
+    //Function to render history list from localstorage
+    function renderExistingHistory() {
+        var cities = getLocal();
+        for (i = 0; i < cities.length; i++) {
+            addToHistory(cities[i]);
+        }
+        currentWeather(cities[cities.length -1]);
+    }
+    renderExistingHistory();
     
     
 });

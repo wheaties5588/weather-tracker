@@ -4,7 +4,7 @@
     padding: 10px;
 }
 
-.eleven {
+.thirteen {
     border: 1px solid rgba(34,36,38,.15);
     border-radius: .28571429rem;
 }
@@ -17,7 +17,7 @@
     display: flex;
 }
 
-#historyList, .ui.comments .comment .text {
+#historyList, .ui.comments .comment .text, .card .content .text {
     text-transform: capitalize;
 }
 
@@ -32,6 +32,7 @@ h1.ui.header {
 .ui.comments .comment .author {
     font-size: 2em;
     display: inline-block;
+    margin-right: .5em;
 }
 
 .ui.comments .comment .metadata>:last-child {
@@ -49,7 +50,7 @@ h1.ui.header {
 }
 
 .currentWeather {
-    margin: 30px 0px;
+    margin: 10px auto 25px auto;
     padding: 10px;
     border: 1px solid rgba(34,36,38,.15);
     box-shadow: 2px 2px 1px black;
@@ -72,8 +73,30 @@ h1.ui.header {
     color: white;
 }
 
-@media screen and (max-width: 500px) {
-    .mainDiv {
+.futureWeatherPlacement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    }
+.ui.cards>.card .avatar img, .ui.cards>.card img.avatar {
+    width: 4em;
+    height: 4em;
+}
+
+.ui.cards>.card {
+    font-size: .8em;
+    width: 150px;
+}
+
+.ui.comments .comment .metadata>:last-child {
+    margin-left: 0px;
+}
+.ui.comments .comment .metadata {
+    margin-left: 0px;
+    margin-bottom: 1.5em;
+}
+
+@media screen and (max-width: 450px) {
+
 }
