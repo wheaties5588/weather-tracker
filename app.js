@@ -19,7 +19,7 @@ $(document).ready(function () {
         
         $.ajax({
             type: "GET",
-            url: "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial",
+            url: "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial",
     
         }).then(function(res) {
             renderCurrentWeather(res);
